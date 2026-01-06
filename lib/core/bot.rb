@@ -30,9 +30,12 @@ module Telegem
 
         @running = false 
         @offset = 0
+        @polling_options = options.slice(:timeout, :limit, :allowed_updates) || {}
       end
       
     def start_polling(**options)
+      @running = true
+      @polling_options = options
       Async do
         poll_loop  # Now runs in Async context
       end
@@ -43,6 +46,7 @@ module Telegem
         
         @logger.info "🛑 Shutting down bot..."
         @running = false
+        sleep 0.1
       end 
       def running?
         @running
