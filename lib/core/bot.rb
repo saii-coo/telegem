@@ -127,7 +127,7 @@ module Telegem
           
             sleep 1
             poll_loop 
-          }
+          
         end
       end
     end
