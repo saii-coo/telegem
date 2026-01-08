@@ -124,9 +124,8 @@ module Telegem
         end
 
         if @running
-          # Schedule next poll in NEW async context
-          Async { |task| 
-            task.sleep(1)
+          
+            sleep 1
             poll_loop 
           }
         end
