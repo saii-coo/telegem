@@ -19,7 +19,13 @@ module Telegem
           chat_member: [],
           poll: [],
           pre_checkout_query: [],
-          shipping_query: []
+          shipping_query: [],
+          poll_answer: [],
+          chat_join_request: [],
+          chat_boost: [],
+          removed_chat_boost: [],
+          message_reaction: [],
+          message_reaction_count: []
         }
         
         @middleware = []
@@ -68,6 +74,71 @@ module Telegem
           block.call(ctx)
         end
       end
+      
+      def contact(**options, &block) 
+        on(:message, contact: true) do |ctx| 
+          block.call(ctx)
+       end 
+      end 
+      
+      def poll_answer(&block) 
+        on(:poll_answer) do |ctx| 
+          block.call(ctx)
+        end
+      end 
+      
+     def pre_checkout_query(&block) 
+       on(:pre_checkout_query) do |ctx| 
+         block.call(ctx) 
+       end 
+      end 
+      
+      def shipping_query(&block) 
+        on(:shipping_query) do |ctx| 
+          block.call(ctx) 
+        end 
+      end 
+      
+      def chat_join_request(&block)
+  on(:chat_join_request) do |ctx|
+    block.call(ctx)
+  end
+end
+
+  def chat_boost(&block)
+   on(:chat_boost) do |ctx|
+    block.call(ctx)
+   end
+ end
+
+ def removed_chat_boost(&block)
+   on(:removed_chat_boost) do |ctx|
+    block.call(ctx)
+   end
+ end
+
+  def message_reaction(&block)
+  on(:message_reaction) do |ctx|
+    block.call(ctx)
+  end
+ end
+
+def message_reaction_count(&block)
+  on(:message_reaction_count) do |ctx|
+    block.call(ctx)
+  end
+end
+      def web_app_data(&block) 
+        on(:message, web_app_data: true) do |ctx|
+          block.call(ctx) 
+        end 
+      end 
+      
+      def location(&block)
+        on(:message, location: true) do |ctx|
+          block.call(ctx) 
+        end 
+      end 
       
       def on(type, filters = {}, &block)
         @handlers[type] << { filters: filters, handler: block }
@@ -240,6 +311,12 @@ module Telegem
         return :poll if update.poll
         return :pre_checkout_query if update.pre_checkout_query
         return :shipping_query if update.shipping_query
+        return :poll_answer if update.poll_answer
+        return :chat_join_request if update.chat_join_request
+        return :chat_boost if update.chat_boost
+        return :removed_chat_boost if update.removed_chat_boost 
+        return :message_reaction if update.message_reaction
+        return :message_reaction_count if update.message_reaction_count 
         :unknown
       end
       
@@ -254,10 +331,20 @@ module Telegem
             matches_chat_type_filter(ctx, value)
           when :command
             matches_command_filter(ctx, value)
-          else
+          when :location 
+            ctx.message&.location != nil 
+          when :contact 
+             ctx.message&.contact != nil 
+          when :web_app_data 
+            ctx.message&.web_app_data != nil
+          else 
+            if  ctx.update.respond_to?(key) 
             ctx.update.send(key) == value
-          end
-        end
+          else 
+            false 
+          end 
+         end
+        end 
       end
       
       def matches_text_filter(ctx, pattern)
