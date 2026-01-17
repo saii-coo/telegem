@@ -27,26 +27,12 @@ module Telegem
           }
         )
       end
-      def call(method, params = {})
-  url = "#{BASE_URL}/bot#{@token}/#{method}"
-  @logger.debug("API Call: #{method}") if @logger
-  
-  http_sync = HTTPX.with(
-    timeout: { 
-      request_timeout: 30,
-      connect_timeout: 10,
-      write_timeout: 10,
-      read_timeout: 30
-    },
-    headers: {
-      'Content-Type' => 'application/json',
-      'User-Agent' => "Telegem/#{Telegem::VERSION}"
-    }
-  )
-  
-  response = http_sync.post(url, json: params.compact).wait
-  response.json
-end
+        def call(method, params = {}) 
+          url = "#{BASE_URL}/bot#{@token}/#{method}"
+          @logger.debug("Api call #{method}") if @logger 
+          response = @http.post(url, json: params.compact).await
+          response.json 
+         end  
         def call!(method, params = {}, &callback)
   url = "#{BASE_URL}/bot#{@token}/#{method}"
   
@@ -112,8 +98,8 @@ end
             [key.to_s, value.to_s]
           end
         end
-        
-        @http.post(url, form: form)
+         response = @http.post(url, form: form).await
+         response.json 
       end
 
       def get_updates(offset: nil, timeout: 30, limit: 100, allowed_updates: nil)
