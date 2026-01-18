@@ -287,12 +287,20 @@ end
           end
         end
         
-        unless @middleware.any? { |m, _, _| m.is_a?(Session::Middleware) }
-          chain.use(Session::Middleware.new(@session_store))
-        end
-        
-        chain
-      end
+        unless @middleware.any? { |m, _, _| m.to_s =~ /Scene/ }
+    begin
+      require_relative '../session/scene_middleware'
+      chain.use(Telegem::Scene::Middleware.new)
+    rescue LoadError => e
+      @logger.debug("Scene middleware not available: #{e.message}") if @logger
+    end
+  end
+  unless @middleware.any? { |m, _, _| m.is_a?(Session::Middleware) }
+    chain.use(Session::Middleware.new(@session_store))
+  end
+  
+  chain
+end
       
       def dispatch_to_handlers(ctx)
         update_type = detect_update_type(ctx.update)
