@@ -11,7 +11,6 @@ module Telegem
           if scene
             # Let scene handle it
             scene.process(ctx)
-            return  # Don't call regular handlers
           end
         end
         
