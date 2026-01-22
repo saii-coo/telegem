@@ -1,5 +1,6 @@
 require 'httpx'
 require 'json'
+require 'httpx/plugins/form_data'
 
 module Telegem
   module API
@@ -39,39 +40,34 @@ module Telegem
            end  
          end  
         def call!(method, params = {}, &callback)
-  url = "#{BASE_URL}/bot#{@token}/#{method}"
-  
-  if callback
-    @http.on_response_completed do |request, response|
-      begin
-        if response.status == 200
-          json = response.json
-          if json && json['ok']
-            callback.call(json['result'], nil)
-            @logger.debug("API Response: #{json}") if @logger
-          else
-            error_msg = json ? json['description'] : "No JSON response"
-            error_code = json['error_code'] if json
-            callback.call(nil, APIError.new("API Error: #{error_msg}", error_code))
-          end
-        else
-          callback.call(nil, NetworkError.new("HTTP #{response.status}"))
-        end
-      rescue JSON::ParserError
-        callback.call(nil, NetworkError.new("Invalid JSON response"))
-      rescue => e
-        callback.call(nil, e)
-      end
-    end
-    
-    @http.on_request_error do |request, error|
-      callback.call(nil, error)
-    end
-  end
-
-  @http.post(url, json: params.compact)
-  
-end
+          url = "#{BASE_URL}/bot#{@token}/#{method}"
+           return unless callback
+             @http.post(url, json: params.compact) do |response| 
+                begin 
+                  if response.status == 200
+                    json = response.json 
+                     if json && json['ok'] 
+                       @logger.debug("#{json}") if @logger 
+                       callback.call(json['result'], nil) 
+                      else 
+                        error_msg = json ? 
+                        json['description'] : "NO JSON Response" 
+                        error_code = json['error_code'] if json 
+                        callback.call(nil, APIError.new("API ERROR  #{error_msg}", error_code))
+                      end 
+                    end 
+                  else
+                    callback.call(nil, NetworkError.new("HTTP #{response.status}")) 
+                  end 
+                rescue JSON::ParserError
+                  callback.call(nil, NetworkError.new("Invalid Json response"))
+                rescue => e
+                  callback.call(nil, e)
+                end 
+              end 
+              
+            end 
+                   
       def upload(method, params)
         url = "#{BASE_URL}/bot#{@token}/#{method}"
         
@@ -82,9 +78,29 @@ end
             [key.to_s, value.to_s]
           end
         end
-         response = @http.post(url, form: form).await
+         response = @http.post(url, form: form)
          response.json 
       end
+      
+      def download(file_id, destination_path = nil) 
+         file_info = call('getFile', file_id: file_id)
+         return nil unless file_info && file_info['file_path'] 
+         file_path = file_info['file_path'] 
+         download_url = "#{BASE_URL}/file/bot#{@token}/#{file_path}"
+         @logger.debug("downloading.. #{download_url}") if @logger 
+         response = @http.get(download_url)
+         if response.status == 200
+           if destination_path
+             File.binwrite(destination_path, response.body.to_s)
+             @logger.debug("saved to #{destination_path}") if @logger 
+             destination_path
+           else 
+             response.body.to_s 
+           end 
+         else 
+           raise NetworkError.new("Download failed : #{response.status}") 
+         end 
+       end 
 
       def get_updates(offset: nil, timeout: 30, limit: 100, allowed_updates: nil)
         params = { timeout: timeout, limit: limit }
