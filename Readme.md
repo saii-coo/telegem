@@ -63,7 +63,7 @@ Interactive Example
 ```ruby
 # Pizza ordering bot example
 bot.command('order') do |ctx|
-  keyboard = Telegem::Markup.keyboard do
+  keyboard = Telegem.keyboard do
     row "🍕 Margherita", "🍕 Pepperoni"
     row "🥤 Drinks", "🍰 Dessert"
     row "📞 Support", "❌ Cancel"
@@ -75,11 +75,6 @@ end
 
 ---
 
-📸 See It in Action
-
-<img src="https://i.postimg.cc/W3fdnx45/DA5D1EC7-F2E2-4243-87AB-841F5467F70C.png">
-
-Example bot with interactive keyboard and scene-based  flow
 
 ---
 
@@ -108,22 +103,7 @@ Perfect For:
 
 📚 Documentation
 
-Getting Started
 
-1. How to Use - Beginner-friendly tutorial
-2. Usage Guide - Advanced patterns & best practices
-3. Cookbook - Copy-paste recipes for common tasks
-4. API Reference - Complete method documentation
-
-Quick Links
-
-· [Creating Your First Bot](https://gitlab.com/ruby-telegem/telegem/-/blob/main/docs/QuickStart.md)
-· [Understanding Context (ctx)](https://gitlab.com/ruby-telegem/telegem/-/blob/main/docs/How_to_use.md)
-· [Building Scenes](https://gitlab.com/ruby-telegem/telegem/-/blob/main/docs/Usage.md)
-· Middleware Patterns
-· Deployment Guide
-
----
 
 🧩 Advanced Features
 
@@ -217,26 +197,6 @@ CMD ["ruby", "bot.rb"]
 
 ---
 
-🧪 Testing
-
-```ruby
-# Unit test scenes
-describe RegistrationScene do
-  it "asks for name on enter" do
-    ctx = mock_context
-    scene = bot.scenes[:registration]
-    expect(ctx).to receive(:reply).with("What's your name?")
-    scene.enter(ctx)
-  end
-end
-
-# Integration testing
-bot.command('test') { |ctx| ctx.reply("Working!") }
-
-update = mock_update(text: '/test')
-bot.process(update)
-# Verify reply sent
-```
 
 ---
 
@@ -259,19 +219,9 @@ my_bot/
 
 ---
 
-🤝 Contributing
+[🤝 contributing](https://gitlab.com/ruby-telegem/telegem/-/blob/main/Contributing.md)
 
-We love contributions! Whether you're fixing bugs, adding features, or improving documentation, all help is welcome.
 
-How to Contribute:
-
-1. Read CONTRIBUTING.md for detailed guidelines
-2. Fork the repository on GitLab
-3. Create a feature branch (git checkout -b feature/amazing-thing)
-4. Make your changes and add tests
-5. Run tests (rake spec)
-6. Commit with clear messages (git commit -m 'Add amazing thing')
-7. Push and open a Merge Request
 
 Development Setup:
 
@@ -298,14 +248,7 @@ Coming Soon
 - More Session Stores - PostgreSQL, MySQL, MongoDB
 - Built-in Analytics - Usage tracking & insights
 - Admin Dashboard - Web interface for bot management
-- i18n Support - Built-in internationalization
 
-In Progress
-
-- httpx(Async) - Non-blocking I/O
-- Scene System - Multi-step conversations
-- Middleware Pipeline - Extensible architecture
-- Webhook Server - Production deployment
 
 ---
 
@@ -346,7 +289,6 @@ gem install telegem
 ruby -r telegem -e "puts 'Welcome to Telegem! 🚀'"
 ```
 
-Check out docs/ for comprehensive guides, or jump right into examples/ to see real bots in action!
 
 ---
 
