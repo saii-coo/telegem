@@ -1,4 +1,4 @@
-image: ruby:3.3.8-alpine
+image: ruby:3.3.8
 before_script:
     - gem install async pdf-reader rspec httpx concurrent-ruby 
 
