@@ -204,9 +204,9 @@ end
             rescue => e 
              @logger.error "poll loop error #{e.message}"
              end
-             sleep 0.5 
+              sleep 0.7
              end 
-            end 
+           end 
      
       def fetch_updates(&completion_callback)
         params = {
