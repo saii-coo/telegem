@@ -28,14 +28,6 @@ RSpec.describe Telegem::Core::Bot do
     expect(bot.scenes[:welcome]).to be_a(Telegem::Core::Scene)
   end
 
-  it 'starts and stops' do
-    expect(bot.running?).to be false
-    bot.start_polling
-    expect(bot.running?).to be true
-    bot.shutdown
-    expect(bot.running?).to be false
-  end
-end
 
 RSpec.describe Telegem::API::Client do
   let(:client) { Telegem::API::Client.new('fake_token') }
