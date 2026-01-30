@@ -12,12 +12,10 @@ RSpec.describe Telegem::Core::Bot do
   end
   it 'creates bot with token' do
     expect(bot.token).to eq(token)
-  end
-
   it 'has api client' do
     expect(bot.api).to be_a(Telegem::API::Client)
   end
-
+ end
   it 'can register command' do
     bot.command('start') { |ctx| }
     expect(bot.handlers[:message].size).to eq(1)
