@@ -13,22 +13,8 @@ module Telegem
           file_type: nil
         }.merge(options)
         file_path = "temp/#{@file_id}"
-        download_file(file_path)
       end
 
-      def download_file(file_path)
-        if @options[:file_type] == :pdf
-          extract_pdf(file_path)
-        elsif @options[:file_type] == :json
-          extract_json(file_path)
-        elsif @options[:file_type] == :html
-          extract_html(file_path)
-        elsif @options[:file_type] == :txt
-          extract_text(file_path)
-        else
-          { error: "unsupported file type" }
-        end
-      end
 
       def extract_pdf(file_path)
         begin
