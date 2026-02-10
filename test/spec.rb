@@ -8,4 +8,4 @@ require 'spec_helper'
      expect(bot).to be_a(Telegem::Bot) 
    end 
   end 
-  #i will add more test as i understand rspec better 
+  end 
