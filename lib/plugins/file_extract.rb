@@ -12,11 +12,11 @@ module Telegem
           auto_delete: true,
           file_type: nil
         }.merge(options)
-        file_path = "temp/#{@file_id}"
+        @file_path = "temp/#{@file_id}"
       end
 
 
-      def extract_pdf(file_path)
+      def extract_pdf(@file_path)
         begin
           @bot.api.download(@file_id, "#{file_path}.pdf")
           reader = PDF::Reader.new("#{file_path}.pdf")
@@ -44,7 +44,7 @@ module Telegem
         end
       end
 
-      def extract_json(file_path)
+      def extract_json(@file_path)
         @bot.api.download(@file_id, "#{file_path}.json")
         json_data = JSON.parse(File.read("#{file_path}.json"))
         if File.exist?("#{file_path}.json")
@@ -59,7 +59,7 @@ module Telegem
         end
       end
 
-      def extract_html(file_path)
+      def extract_html(@file_path)
         destination = "#{file_path}.html"
         @bot.api.download(@file_id, destination)
         html = File.read(destination)
