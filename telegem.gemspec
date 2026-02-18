@@ -30,13 +30,12 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   
   # Dependencies
-  spec.add_dependency "httpx", "~> 1.0"
-  spec.add_dependency "concurrent-ruby", "~> 1.0"
+  spec.add_dependency "concurrent-ruby", "~> 1.3.6"
   spec.add_dependency "securerandom", "~> 0.1"
-  spec.add_dependency "async", "~> 1.0"
-  spec.add_dependency "async-http", "~> 0.100"
-  spec.add_dependency "pdf-reader", "~> 2.0"
-  spec.add_dependency "docx", "~> 0.3"
+  spec.add_dependency "async", "~> 2.35.2
+  spec.add_dependency "async-http", "~> 0.92.1"
+  spec.add_dependency "pdf-reader", "~> 2.14.1"
+  spec.add_dependency "docx", "~> 0.10.0"
   
   # Developmen
   spec.add_development_dependency "rspec", "~> 3.12"
