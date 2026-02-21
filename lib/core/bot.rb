@@ -1,5 +1,6 @@
+#frozen_string_literal: true
 require 'json'
-
+require 'async'
 module Telegem
   module Core
     class Bot
@@ -148,8 +149,8 @@ module Telegem
       result = @api.call('getUserProfileAudios', {
         user_id: user_id
     }.merge(options))
+    return nil unless result && result['audios']
     Types::UserProfileAudios.new(result)
-    if result
     end 
 
     def create_forum_topic(chat_id, name, **options)
@@ -393,5 +394,4 @@ module Telegem
       end
     end
   end
-end
 end
