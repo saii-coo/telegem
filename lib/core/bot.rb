@@ -239,12 +239,9 @@ module Telegem
             
             if updates && updates.any?
               updates.each do |update_data|
-                Async do
                   update = Types::Update.new(update_data)
                   process_update(update)
                 end
-              end
-              
               @offset = updates.last['update_id'] + 1
               @logger.debug("Updated offset to: #{@offset}")
             end
