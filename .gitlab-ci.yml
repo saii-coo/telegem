@@ -1,11 +1,12 @@
 
 image: ruby:3.3.8
 before_script:
+- gem cleanup telegem
 - gem install async pdf-reader rspec httpx concurrent-ruby async-http telegem rubocop
 - bundle install 
 test:
   script:
-  - rspec test/spec.rb
+  - bundle exec rspec test/spec.rb
 stages:
 - test
 include:
