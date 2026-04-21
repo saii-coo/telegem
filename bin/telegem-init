@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+# bin/telegem-init
+
+require 'fileutils'
+
+puts "creating a telegem application..."
+
+FileUtils.mkdir_p("src/handlers")
+
+code = <<~RUBY
+  require 'telegem'
+  require './handlers/*'
+  require 'dotenv/load'
+
+  bot = Telegem.new(ENV['BOT_TOKEN'])
+
+  bot.start_polling
+RUBY
+
+File.write('src/bot.rb', code)
+
+puts "Successfully created bot.rb!"
+
+puts "done working.."
+
+
+
