@@ -4,7 +4,7 @@ require_relative 'lib/telegem'
 Gem::Specification.new do |spec|
   spec.name          = "telegem"
   spec.version       = Telegem::VERSION
-  spec.authors       = ["sick_phantom"]
+  spec.authors       = ["zendrx"]
   spec.email         = ["ynwghosted@icloud.com"]
   
   spec.summary       = "Modern, fast Telegram Bot Framework for Ruby"
