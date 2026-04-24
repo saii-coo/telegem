@@ -42,7 +42,7 @@ jobs:
       if: steps.check_version.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.2.x
+        ruby-version: 3.4.9
 
     - name: Publish to GPR (GitHub Packages)
       if: steps.check_version.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
